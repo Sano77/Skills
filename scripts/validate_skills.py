@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-import os, sys, json
+import os
+import sys
+import json
 
 EXPECTED_SKILLS = [
     "higgsfield-brandkit",
@@ -68,22 +70,20 @@ def main():
             if not entry.get("source") or not entry.get("skillPath") or not entry.get("computedHash"):
                 errors.append(f"Invalid lock entry for '{skill_name}'")
 
-        print(f"  ✓ {skill_name} validated successfully")
+        print(f"  [OK] {skill_name} validated successfully")
 
     for name in locked_skills.keys():
         if not os.path.isdir(os.path.join(skills_dir, name)):
             errors.append(f"Lockfile contains '{name}' which is missing in .agents/skills")
 
     if errors:
-        print("
-Validation failed with errors:", file=sys.stderr)
+        print("\nValidation failed with errors:", file=sys.stderr)
         for err in errors:
-            print(f"  ✗ {err}", file=sys.stderr)
+            print(f"  [FAIL] {err}", file=sys.stderr)
         return 1
 
-    print(f"
-All {len(EXPECTED_SKILLS)} skills and skills-lock.json passed validation successfully!")
+    print(f"\nAll {len(EXPECTED_SKILLS)} skills and skills-lock.json passed validation successfully!")
     return 0
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())
